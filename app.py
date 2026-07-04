@@ -1,5 +1,4 @@
 import streamlit as st
-import re
 
 # -------------------------
 # 페이지 설정
@@ -20,10 +19,10 @@ st.markdown("""
 .display {
     background-color: #001f5c;
     color: white;
-    padding: 25px;
+    padding: 28px;
     border-radius: 15px;
     text-align: right;
-    font-size: 44px;
+    font-size: 48px;   /* 🔥 살짝 증가 */
     font-weight: bold;
     margin-bottom: 10px;
 }
@@ -36,21 +35,16 @@ st.markdown("""
     margin-bottom: 10px;
 }
 
-/* 🔥 모든 버튼 동일 */
+/* 🔥 모든 버튼 동일 + 글자 더 크게 */
 div.stButton > button {
     background-color: #001f5c;
     color: white;
     border-radius: 18px;
     height: 85px;
-    font-size: 30px;
+    font-size: 34px;   /* 🔥 핵심 증가 */
     font-weight: bold;
     width: 100%;
     transition: 0.1s;
-}
-
-/* 연산자 버튼 스타일 */
-button[data-baseweb="button"] {
-    color: white;
 }
 
 /* 눌림 효과 */
@@ -61,12 +55,6 @@ div.stButton > button:active {
 
 div.stButton > button:hover {
     background-color: #003080;
-}
-
-/* 연산자 강조 */
-.operator {
-    background-color: #ff9500 !important;
-    color: white !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -81,7 +69,7 @@ if "history" not in st.session_state:
     st.session_state.history = ""
 
 # -------------------------
-# 안전 계산
+# 계산
 # -------------------------
 def safe_eval(expr):
     try:
@@ -102,9 +90,8 @@ def press(key):
         st.session_state.expr = st.session_state.expr[:-1]
 
     elif key == "=":
-        result = safe_eval(st.session_state.expr)
         st.session_state.history = st.session_state.expr
-        st.session_state.expr = result
+        st.session_state.expr = safe_eval(st.session_state.expr)
 
     elif key == "±":
         if st.session_state.expr:
@@ -134,7 +121,7 @@ st.markdown(f"<div class='history'>{st.session_state.history}</div>", unsafe_all
 st.markdown(f"<div class='display'>{st.session_state.expr or '0'}</div>", unsafe_allow_html=True)
 
 # -------------------------
-# 버튼 UI
+# 버튼
 # -------------------------
 row1 = st.columns(4)
 row2 = st.columns(4)
